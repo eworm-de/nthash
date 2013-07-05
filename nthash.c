@@ -22,9 +22,9 @@ int main(int argc, char **argv) {
 	int i, done;
 	
 	md4_init(&ctx);
-	for (;;) {
+	while (1) {
 		done = fread(buffer, 1, sizeof(buffer), stdin);
-		// add null bytes to string
+		/* add null bytes to string */
 		for (i = 0; i < done; i++) {
 			if (buffer[i] == 0xa)
 				fprintf(stderr, "Warning: Password contains line break!\n");
