@@ -1,6 +1,12 @@
-/* (c) 2012-2013 Christian Hesse <mail@eworm.de>
+/*
+ * (C) 2012-2013 by Christian Hesse <mail@eworm.de>
+ *
+ * This software may be used and distributed according to the terms
+ * of the GNU General Public License, incorporated herein by reference.
+ *
  * Base on an example from:
- * http://www.lysator.liu.se/~nisse/nettle/nettle.html#Example */
+ * http://www.lysator.liu.se/~nisse/nettle/nettle.html#Example
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
