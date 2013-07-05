@@ -22,6 +22,10 @@ int main(int argc, char **argv) {
 		for (i = 0; i < done; i++) {
 			if (buffer[i] == 0xa)
 				fprintf(stderr, "Warning: Password contains line break!\n");
+			else if (buffer[i] < 0x20 || buffer[i] == 0x7f)
+				fprintf(stderr, "Warning: Password contains non-printable control character 0x%x!\n", buffer[i]);
+			else if (buffer[i] > 0x7f)
+				fprintf(stderr, "Warning: Password contains non-ASCII character 0x%x!\n", buffer[i]);
 			buffernull[i*2] = buffer[i];
 			buffernull[i*2+1] = 0;
 		}
