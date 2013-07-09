@@ -45,7 +45,7 @@ int main(int argc, char **argv) {
 
 	md4_digest(&ctx, MD4_DIGEST_SIZE, digest);
 
-	for (i = 0; i < MD4_DIGEST_SIZE -1; i++)
+	for (i = 0; i < MD4_DIGEST_SIZE; i++)
 		printf("%02x", digest[i]);
 	putchar('\n');
 
