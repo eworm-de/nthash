@@ -14,7 +14,7 @@ all: nthash.c
 
 check:
 	$(ECHO) -n "testing123" | ./nthash | \
-		$(GREP) '^3e 67 8b 26 6d 1d 44 9e 53 1e 92 be c3 3b 6d 27$$'
+		$(GREP) '^3e678b266d1d449e531e92bec33b6d27$$'
 
 install:
 	$(INSTALL) -D -m0755 nthash $(DESTDIR)/usr/bin/nthash

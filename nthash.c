@@ -10,33 +10,34 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <iconv.h>
 		 
 #include <nettle/md4.h>
 		 
-#define BUF_SIZE 1024
+#define BUF_SIZE	64
+#define TOCODE		"UTF-16LE"
+#define FROMCODE	"UTF-8"
 
 int main(int argc, char **argv) {
 	struct md4_ctx ctx;
-	uint8_t buffer[BUF_SIZE], buffernull[2*BUF_SIZE];
+	char buffer[BUF_SIZE], buffernull[2 * BUF_SIZE];
+	char *in = buffer, *out = buffernull;
 	uint8_t digest[MD4_DIGEST_SIZE];
-	int i, done;
+	int i;
+	size_t done, inbytes, outbytes;
+	iconv_t conv;
 	
 	md4_init(&ctx);
 	while (1) {
-		done = fread(buffer, 1, sizeof(buffer), stdin);
-		/* add null bytes to string */
-		for (i = 0; i < done; i++) {
-			if (buffer[i] == 0xa)
-				fprintf(stderr, "Warning: Password contains line break!\n");
-			else if (buffer[i] < 0x20 || buffer[i] == 0x7f)
-				fprintf(stderr, "Warning: Password contains non-printable control character 0x%x!\n", buffer[i]);
-			else if (buffer[i] > 0x7f)
-				fprintf(stderr, "Warning: Password contains non-ASCII character 0x%x!\n", buffer[i]);
-			buffernull[i*2] = buffer[i];
-			buffernull[i*2+1] = 0;
-		}
-		md4_update(&ctx, done*2, buffernull);
-		if (done < sizeof(buffer))
+		done = inbytes = fread(buffer, 1, BUF_SIZE, stdin);
+		outbytes = 2 * inbytes;
+
+		conv = iconv_open(TOCODE, FROMCODE);
+		iconv(conv, &in, &inbytes, &out, &outbytes);
+		iconv_close(conv);
+
+		md4_update(&ctx, done * 2 - outbytes, (unsigned char *)buffernull);
+		if (done < BUF_SIZE)
 			break;
 	}
 	if (ferror(stdin))
@@ -45,8 +46,7 @@ int main(int argc, char **argv) {
 	md4_digest(&ctx, MD4_DIGEST_SIZE, digest);
 
 	for (i = 0; i < MD4_DIGEST_SIZE -1; i++)
-		printf("%02x ", digest[i]);
-	printf("%02x", digest[i]);
+		printf("%02x", digest[i]);
 	putchar('\n');
 
 	return EXIT_SUCCESS;
