@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <iconv.h>
 		 
 #include <nettle/md4.h>
@@ -23,7 +24,7 @@ int main(int argc, char **argv) {
 	char buffer[BUF_SIZE], buffernull[2 * BUF_SIZE];
 	char *in = buffer, *out = buffernull;
 	uint8_t digest[MD4_DIGEST_SIZE];
-	int i;
+	int i, linebreak = 0;
 	size_t done, inbytes, outbytes;
 	iconv_t conv;
 	
@@ -31,6 +32,9 @@ int main(int argc, char **argv) {
 	while (1) {
 		done = inbytes = fread(buffer, 1, BUF_SIZE, stdin);
 		outbytes = 2 * inbytes;
+
+		if (strstr(buffer, "\n") != NULL)
+			linebreak++;
 
 		conv = iconv_open(TOCODE, FROMCODE);
 		iconv(conv, &in, &inbytes, &out, &outbytes);
@@ -42,6 +46,9 @@ int main(int argc, char **argv) {
 	}
 	if (ferror(stdin))
 		return EXIT_FAILURE;
+
+	if (linebreak)
+		fprintf(stderr, "Warning: Input contains line break!\n");
 
 	md4_digest(&ctx, MD4_DIGEST_SIZE, digest);
 
