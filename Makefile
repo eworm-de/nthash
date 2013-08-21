@@ -9,7 +9,9 @@ CFLAGS	+= -O2 -Wall -Werror
 CFLAGS	+= $(shell pkg-config --cflags --libs nettle)
 VERSION	= $(shell git describe --tags --long)
 
-all: nthash.c
+all: nthash
+
+nthash:
 	$(CC) $(CFLAGS) -o nthash nthash.c
 
 check:
@@ -18,7 +20,7 @@ check:
 	$(ECHO) "testing123" | ./nthash 2>&1 | \
 		$(GREP) -q '^Warning: Input contains line break!$$'
 
-install:
+install: nthash
 	$(INSTALL) -D -m0755 nthash $(DESTDIR)/usr/bin/nthash
 
 clean:
