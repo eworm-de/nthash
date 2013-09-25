@@ -7,7 +7,6 @@ INSTALL	:= install
 RM	:= rm
 CFLAGS	+= -O2 -Wall -Werror
 CFLAGS	+= $(shell pkg-config --cflags --libs nettle)
-VERSION	= $(shell git describe --tags --long)
 
 all: nthash
 
