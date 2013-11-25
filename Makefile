@@ -6,7 +6,9 @@ GREP	:= grep
 INSTALL	:= install
 RM	:= rm
 CFLAGS	+= -O2 -Wall -Werror
-CFLAGS	+= $(shell pkg-config --cflags --libs nettle)
+# Debian has the libs but no pkg-config file. Fall back to hard coded
+# "-lnettle" if pkg-config fails.
+CFLAGS	+= $(shell pkg-config --cflags --libs nettle 2>/dev/null || echo "-lnettle")
 
 all: nthash
 
