@@ -1,6 +1,8 @@
 # nthash - Generate NT Hash
-PREFIX  := /usr
+
+PREFIX	:= /usr
 CC	:= gcc
+MD	:= markdown
 ECHO	:= echo
 GREP	:= grep
 INSTALL	:= install
@@ -10,10 +12,13 @@ CFLAGS	+= -O2 -Wall -Werror
 # "-lnettle" if pkg-config fails.
 CFLAGS	+= $(shell pkg-config --cflags --libs nettle 2>/dev/null || echo "-lnettle")
 
-all: nthash
+all: nthash README.html
 
 nthash:
 	$(CC) $(CFLAGS) -o nthash $(LDFLAGS) nthash.c
+
+README.html: README.md
+	$(MD) README.md > README.html
 
 check:
 	$(ECHO) -n "testing123" | ./nthash | \
@@ -21,8 +26,14 @@ check:
 	$(ECHO) "testing123" | ./nthash 2>&1 | \
 		$(GREP) -q '^Warning: Input contains line break!$$'
 
-install: nthash
-	$(INSTALL) -pDm0755 nthash $(DESTDIR)$(PREFIX)/bin/nthash
+install: install-bin install-doc
+
+install-bin: nthash
+	$(INSTALL) -pD -m0755 nthash $(DESTDIR)$(PREFIX)/bin/nthash
+
+install-doc: README.html
+	$(INSTALL) -pD -m0644 README.md $(DESTDIR)$(PREFIX)/share/doc/nthash/README.md
+	$(INSTALL) -pD -m0644 README.html $(DESTDIR)$(PREFIX)/share/doc/nthash/README.html
 
 clean:
-	$(RM) -f *.o *~ nthash
+	$(RM) -f *.o *~ README.html nthash
