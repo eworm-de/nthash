@@ -1,5 +1,5 @@
 # nthash - Generate NT Hash
-
+PREFIX  := /usr
 CC	:= gcc
 ECHO	:= echo
 GREP	:= grep
@@ -13,7 +13,7 @@ CFLAGS	+= $(shell pkg-config --cflags --libs nettle 2>/dev/null || echo "-lnettl
 all: nthash
 
 nthash:
-	$(CC) $(CFLAGS) -o nthash nthash.c
+	$(CC) $(CFLAGS) -o nthash $(LDFLAGS) nthash.c
 
 check:
 	$(ECHO) -n "testing123" | ./nthash | \
@@ -22,7 +22,7 @@ check:
 		$(GREP) -q '^Warning: Input contains line break!$$'
 
 install: nthash
-	$(INSTALL) -D -m0755 nthash $(DESTDIR)/usr/bin/nthash
+	$(INSTALL) -pDm0755 nthash $(DESTDIR)$(PREFIX)/bin/nthash
 
 clean:
 	$(RM) -f *.o *~ nthash
