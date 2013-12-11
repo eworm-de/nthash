@@ -12,9 +12,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <iconv.h>
-		 
+
 #include <nettle/md4.h>
-		 
+
 #define BUF_SIZE	64
 #define TOCODE		"UTF-16LE"
 #define FROMCODE	"UTF-8"
@@ -27,7 +27,7 @@ int main(int argc, char **argv) {
 	int i, linebreak = 0;
 	size_t done, inbytes, outbytes;
 	iconv_t conv;
-	
+
 	md4_init(&ctx);
 	while (1) {
 		done = inbytes = fread(buffer, 1, BUF_SIZE, stdin);
