@@ -14,7 +14,7 @@ CFLAGS	+= $(shell pkg-config --cflags --libs nettle 2>/dev/null || echo "-lnettl
 
 all: nthash README.html
 
-nthash:
+nthash: nthash.c
 	$(CC) $(CFLAGS) -o nthash $(LDFLAGS) nthash.c
 
 README.html: README.md
