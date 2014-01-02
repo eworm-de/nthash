@@ -2,3 +2,5 @@
 *.o
 nthash
 README.html
+nthash-*.tar.xz
+nthash-*.tar.xz.asc
