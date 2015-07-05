@@ -45,3 +45,7 @@ with option `-n`:
 > echo -n test | nthash  
 > 0cb6948805f797bf2a82807973b89537
 
+### Upstream
+
+URL: [GitHub.com](https://github.com/eworm-de/nthash)  
+Mirror: [eworm.de](http://git.eworm.de/cgit.cgi/nthash/)
