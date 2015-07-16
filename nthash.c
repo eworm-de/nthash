@@ -11,41 +11,48 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <locale.h>
+#include <langinfo.h>
 #include <iconv.h>
 
 #include <nettle/md4.h>
 
 #define BUF_SIZE	64
-#define TOCODE		"UTF-16LE"
-#define FROMCODE	"UTF-8"
 
 int main(int argc, char **argv) {
 	struct md4_ctx ctx;
-	char buffer[BUF_SIZE], buffernull[2 * BUF_SIZE];
-	char *in = buffer, *out = buffernull;
+	char inbuffer[BUF_SIZE], outbuffer[2 * BUF_SIZE];
+	char *in = inbuffer, *out = outbuffer;
 	uint8_t digest[MD4_DIGEST_SIZE];
 	int i, linebreak = 0;
 	size_t done, inbytes, outbytes;
 	iconv_t conv;
 
-	md4_init(&ctx);
-	while (1) {
-		done = inbytes = fread(buffer, 1, BUF_SIZE, stdin);
-		outbytes = 2 * inbytes;
+	if (setlocale(LC_ALL, "") == NULL) {
+		fprintf(stderr, "Failed to initialize locale\n");
+		return EXIT_FAILURE;
+	}
 
-		if (strstr(buffer, "\n") != NULL)
+	md4_init(&ctx);
+
+	while (1) {
+		done = inbytes = fread(inbuffer, 1, sizeof(inbuffer), stdin);
+		outbytes = sizeof(outbuffer);
+
+		if (strstr(inbuffer, "\n") != NULL)
 			linebreak++;
 
-		conv = iconv_open(TOCODE, FROMCODE);
-		iconv(conv, &in, &inbytes, &out, &outbytes);
+		conv = iconv_open("UTF-16LE", nl_langinfo(CODESET));
+		if (iconv(conv, &in, &inbytes, &out, &outbytes) == -1) {
+			fprintf(stderr, "Failed to convert characters\n");
+			return EXIT_FAILURE;
+		}
 		iconv_close(conv);
 
-		md4_update(&ctx, done * 2 - outbytes, (unsigned char *)buffernull);
-		if (done < BUF_SIZE)
+		md4_update(&ctx, sizeof(outbuffer) - outbytes, (unsigned char *)outbuffer);
+		if (done < sizeof(inbuffer))
 			break;
 	}
-	if (ferror(stdin))
-		return EXIT_FAILURE;
 
 	if (linebreak)
 		fprintf(stderr, "Warning: Input contains line break!\n");
