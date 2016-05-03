@@ -1,22 +1,30 @@
 # nthash - Generate NT Hash
 
 PREFIX	:= /usr
+
+# commands
 CC	:= gcc
 MD	:= markdown
 ECHO	:= echo
 GREP	:= grep
 INSTALL	:= install
 RM	:= rm
-CFLAGS	+= -std=c11 -O2 -Wall -Werror
+
+# flags
+CFLAGS	+= -std=c11 -O2 -fPIC -Wall -Werror
 # Debian has the libs but no pkg-config file. Fall back to hard coded
 # "-lnettle" if pkg-config fails.
 CFLAGS	+= $(shell pkg-config --cflags --libs nettle 2>/dev/null || echo "-lnettle")
+LDFLAGS	+= -Wl,-z,now -Wl,-z,relro -pie
+
+# this is just a fallback in case you do not use git but downloaded
+# a release tarball...
 VERSION	:= 0.1.6
 
 all: nthash README.html
 
 nthash: nthash.c
-	$(CC) $(CFLAGS) -o nthash $(LDFLAGS) nthash.c
+	$(CC) $(CFLAGS) $(LDFLAGS) -o nthash nthash.c
 
 README.html: README.md
 	$(MD) README.md > README.html
