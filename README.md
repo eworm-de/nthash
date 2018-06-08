@@ -48,8 +48,8 @@ with option `-n`:
 ### Upstream
 
 URL:
-[GitHub.com](https://github.com/eworm-de/nthash)  
+[GitHub.com](https://github.com/eworm-de/nthash#nthash)
 
 Mirror:
 [eworm.de](https://git.eworm.de/cgit.cgi/nthash/)
-[GitLab.com](https://gitlab.com/eworm-de/nthash)  
+[GitLab.com](https://gitlab.com/eworm-de/nthash#nthash)
