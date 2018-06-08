@@ -42,8 +42,8 @@ Just feed `nthash` with the password on standard input. Please not that
 `nthash` does not strip new lines from input. You may want to use `echo`
 with option `-n`:
 
-> echo -n test | nthash  
-> 0cb6948805f797bf2a82807973b89537
+    $ echo -n test | nthash
+    0cb6948805f797bf2a82807973b89537
 
 ### Upstream
 
