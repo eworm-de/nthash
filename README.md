@@ -13,8 +13,8 @@ Requirements
 
 To compile and run `ntash` you need:
 
-* [nettle](http://www.lysator.liu.se/~nisse/nettle/)
-* [markdown](http://daringfireball.net/projects/markdown/) (HTML documentation)
+* [nettle](https://www.lysator.liu.se/~nisse/nettle/)
+* [markdown](https://daringfireball.net/projects/markdown/) (HTML documentation)
 
 Additionally it is expected to have `make` and `pkg-config` around to
 successfully compile.
