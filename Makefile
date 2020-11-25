@@ -24,7 +24,7 @@ VERSION	:= 0.1.6
 all: nthash README.html
 
 nthash: nthash.c
-	$(CC) $(CFLAGS) $(LDFLAGS) -o nthash nthash.c
+	$(CC) nthash.c $(CFLAGS) $(LDFLAGS) -o nthash
 
 README.html: README.md
 	$(MD) README.md > README.html
