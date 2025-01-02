@@ -1,5 +1,5 @@
 /*
- * (C) 2012-2024 by Christian Hesse <mail@eworm.de>
+ * (C) 2012-2025 by Christian Hesse <mail@eworm.de>
  *
  * Base on an example from:
  * http://www.lysator.liu.se/~nisse/nettle/nettle.html#Example
