@@ -66,3 +66,6 @@ URL:
 Mirror:
 [eworm.de](https://git.eworm.de/cgit.cgi/nthash/)
 [GitLab.com](https://gitlab.com/eworm-de/nthash#nthash)
+
+---
+[⬆️ Go back to top](#top)
