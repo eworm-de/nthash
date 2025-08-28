@@ -19,7 +19,8 @@ LDFLAGS	+= -Wl,-z,now -Wl,-z,relro -pie
 
 # this is just a fallback in case you do not use git but downloaded
 # a release tarball...
-VERSION	:= 0.1.7
+DISTVER := 0.1.7
+VERSION ?= $(shell git describe --long 2>/dev/null || echo $(DISTVER))
 
 all: nthash README.html
 
@@ -48,6 +49,6 @@ clean:
 	$(RM) -f *.o *~ README.html nthash
 
 release:
-	git archive --format=tar.xz --prefix=nthash-$(VERSION)/ $(VERSION) > nthash-$(VERSION).tar.xz
-	gpg --armor --detach-sign --comment nthash-$(VERSION).tar.xz nthash-$(VERSION).tar.xz
-	git notes --ref=refs/notes/signatures/tar add -C $$(git archive --format=tar --prefix=nthash-$(VERSION)/ $(VERSION) | gpg --armor --detach-sign --comment nthash-$(VERSION).tar | git hash-object -w --stdin) $(VERSION)
+	git archive --format=tar.xz --prefix=nthash-$(DISTVER)/ $(DISTVER) > nthash-$(DISTVER).tar.xz
+	gpg --armor --detach-sign --comment nthash-$(DISTVER).tar.xz nthash-$(DISTVER).tar.xz
+	git notes --ref=refs/notes/signatures/tar add -C $$(git archive --format=tar --prefix=nthash-$(DISTVER)/ $(DISTVER) | gpg --armor --detach-sign --comment nthash-$(DISTVER).tar | git hash-object -w --stdin) $(DISTVER)
