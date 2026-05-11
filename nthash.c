@@ -27,6 +27,7 @@
 #include <iconv.h>
 
 #include <nettle/md4.h>
+#include <nettle/version.h>
 
 #define BUF_SIZE	64
 
@@ -68,7 +69,11 @@ int main(int argc, char **argv) {
 	if (linebreak)
 		fprintf(stderr, "Warning: Input contains line break!\n");
 
+#if NETTLE_VERSION_MAJOR > 3
+	md4_digest(&ctx, digest);
+#else
 	md4_digest(&ctx, MD4_DIGEST_SIZE, digest);
+#endif
 
 	for (i = 0; i < MD4_DIGEST_SIZE; i++)
 		printf("%02x", digest[i]);
